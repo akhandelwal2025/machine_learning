@@ -5,6 +5,13 @@
 # cross-entropy / log loss: A loss function that utilizes logs. If the predicted value is equal to the expected value (i.e. 7=7), then return -log(predict_val) = 1. If predicted value not equal to expected (i.e. predicted_val=6.9), then return -log(1-predicted_val). Higher loss for worse prediction
 import tensorflow as tf
 from tensorflow.examples.tutorials.mnist import input_data
+import numpy as np
+from PIL import Image
+import matplotlib.pyplot as plt
+
+# PLOT ARRAYS
+iterations = []
+acc = []
 
 # NUMBER OF NODES PER LAYER
 input_nodes = 784  # Each image is 28x28 pixels = 784 inputs
@@ -14,8 +21,8 @@ hidden3_nodes = 128
 output_nodes = 10  # Only 10 digits possible
 
 # HYPERPARAMETERS
-learning_rate = 1e-4  # Rate at which weights are tuned to reduce loss function and converge to minimum. Higher learning rate will converge faster but can overshoot minimum
-n_iterations = 1000  # Number of times we go through learning steps. The weights will be tuned n_iterations number of time
+learning_rate = 5e-4  # Rate at which weights are tuned to reduce loss function and converge to minimum. Higher learning rate will converge faster but can overshoot minimum
+n_iterations = 1000 # Number of times we go through learning steps. The weights will be tuned n_iterations number of time
 batch_size = 128  # Every training step will utilize 128 examples
 dropout = 0.5  # Percent of nodes that are randomly shut off at each training step. By turning off nodes randomly, model can not just "memorize" training set, which prevents overfitting.
 
@@ -67,6 +74,7 @@ init = tf.global_variables_initializer()
 sess = tf.Session()
 sess.run(init)
 
+
 for i in range(n_iterations):
     batch_x, batch_y = mnist.train.next_batch(batch_size)
     sess.run(train_step, feed_dict={
@@ -74,20 +82,40 @@ for i in range(n_iterations):
         })
 
     # print loss and accuracy (per minibatch)
-    if i % 100 == 0:
-        minibatch_loss, minibatch_accuracy = sess.run(
-            [cross_entropy, accuracy],
-            feed_dict={x: batch_x, y: batch_y, keep_prob: 1.0}
-            )
-        print(
-            "Iteration",
-            str(i),
-            "\t| Loss =",
-            str(minibatch_loss),
-            "\t| Accuracy =",
-            str(minibatch_accuracy)
-            )
+    minibatch_loss, minibatch_accuracy = sess.run(
+        [cross_entropy, accuracy],
+        feed_dict={x: batch_x, y: batch_y, keep_prob: 1.0}
+        )
+    print(
+        "Iteration",
+        str(i),
+        "\t| Loss =",
+        str(minibatch_loss),
+        "\t| Accuracy =",
+        str(minibatch_accuracy)
+        )
+    iterations.append(i)
+    acc.append(minibatch_accuracy)
+plt.plot(iterations, acc)
+plt.show()
 
 test_accuracy = sess.run(accuracy, feed_dict={x: mnist.test.images, y: mnist.test.labels, keep_prob: 1.0})
 print("\nAccuracy on test set:", test_accuracy)
+
+digits={
+    0 : "hand_drawn_images/zero.png",
+    1 : "hand_drawn_images/one.png",
+    2 : "hand_drawn_images/two.png",
+    3 : "hand_drawn_images/three.png",
+    4 : "hand_drawn_images/four.png",
+    5 : "hand_drawn_images/five.png",
+    6 : "hand_drawn_images/six.png",
+    7 : "hand_drawn_images/seven.png",
+    8 : "hand_drawn_images/eight.png",
+    9 : "hand_drawn_images/nine.png"
+}
+for r in range(0, 10, 1):
+    img = np.invert(Image.open(digits[r]).convert('L')).ravel()
+    prediction = sess.run(tf.argmax(output_layer, 1), feed_dict={x: [img]})
+    print("Prediction for test image:", np.squeeze(prediction))
 
