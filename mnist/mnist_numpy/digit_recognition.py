@@ -1,8 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
+import math
 import random
+import numpy as np
 import gzip
-from tensorflow.examples.tutorials.mnist import input_data
 
 train_img_filepath = 'MNIST_data/train-images-idx3-ubyte.gz'
 train_labels_filepath = 'MNIST_data/train-labels-idx1-ubyte.gz'
@@ -34,7 +33,7 @@ def main():
         output_results = [] # predictions
         for img in current_img:
             output_results.append(run_session(img))
-        calculate_cross_entropy()
+        calculate_batch_loss(epoch, output_results, current_labels)
 
 
 
@@ -101,8 +100,20 @@ def get_next_train_batch(epoch_num):
 
     return img_return, label_return
 
-def calculate_cross_entropy(predictions, correct_labels):
-    
+def one_hot_encoding(label):
+    to_return = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    to_return[label] = 1
+    return to_return
 
+def calculate_batch_loss(epoch, predictions, correct_labels):
+    sum = 0
+    for index in range(epoch*batch_size, epoch*batch_size+batch_size, 1):
+        sum += calculate_mse(predictions[index], one_hot_encoding(correct_labels[index]))
+    return sum/len(predictions)
 
+def calculate_mse(prediction, val):
+    sum_of_mse = 0
+    for index in range(10):
+        sum_of_mse += math.pow((prediction[index]-val[index]), 2)
+    return sum_of_mse
 
