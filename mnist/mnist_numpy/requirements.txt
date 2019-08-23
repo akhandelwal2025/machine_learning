@@ -2,3 +2,4 @@ tensorflow
 numpy
 scipy
 matplotlib
+Python-mnist
