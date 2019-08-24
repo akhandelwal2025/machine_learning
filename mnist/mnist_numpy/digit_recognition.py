@@ -16,7 +16,6 @@ hidden2_layer = 256
 hidden3_layer = 128
 output_nodes = 10
 
-
 learning_rate = 1e-4
 n_iterations = 1000
 batch_size = 128
@@ -30,11 +29,10 @@ def main():
     set_parameters()
     for epoch in range(n_iterations):
         current_img, current_labels = get_next_train_batch(epoch)
-        output_results = [] # predictions
+        output_results = []  # predictions
         for img in current_img:
             output_results.append(run_session(img))
-        calculate_batch_loss(epoch, output_results, current_labels)
-
+        batch_loss = calculate_batch_loss(epoch, output_results, current_labels)
 
 
 
@@ -59,8 +57,10 @@ def set_parameters():
 def create_weights(first_layer, second_layer):
     return np.random.normal(0, 0.1, [first_layer, second_layer])
 
+
 def create_bias(layer_count, constant_val):
     return np.full(shape=layer_count, fill_value=constant_val)
+
 
 def run_session(input_arr):
     layer_1 = np.add(np.matmul(weights['w1'], input_arr), bias['b1'])
@@ -70,13 +70,15 @@ def run_session(input_arr):
     output_layer = np.add(np.matmul(weights['w4'], layer_3), bias['out'])
     return output_layer
 
+
 def dropout(layer):
     num_rows, num_cols = layer.shape
     for row in range(num_rows):
         for col in range(num_cols):
-            if(random.random() < dropout):
+            if (random.random() < dropout):
                 layer[row][col] = 0
-    return (1/dropout) * layer
+    return (1 / dropout) * layer
+
 
 def get_train_img_labels():
     img_file = gzip.open(train_img_filepath, 'r')
@@ -88,9 +90,10 @@ def get_train_img_labels():
     label = label_file.read()
     return img, label
 
+
 def get_next_train_batch(epoch_num):
     img_return, label_return = []
-    for i in range(epoch_num*batch_size, epoch_num*batch_size+batch_size, 1):
+    for i in range(epoch_num * batch_size, epoch_num * batch_size + batch_size, 1):
         img_return.append(np.asarray(train_img[i]).squeeze())
 
     for l in range(batch_size):
@@ -100,20 +103,22 @@ def get_next_train_batch(epoch_num):
 
     return img_return, label_return
 
+
 def one_hot_encoding(label):
     to_return = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     to_return[label] = 1
     return to_return
 
+
 def calculate_batch_loss(epoch, predictions, correct_labels):
     sum = 0
-    for index in range(epoch*batch_size, epoch*batch_size+batch_size, 1):
+    for index in range(epoch * batch_size, epoch * batch_size + batch_size, 1):
         sum += calculate_mse(predictions[index], one_hot_encoding(correct_labels[index]))
-    return sum/len(predictions)
+    return sum / len(predictions)
+
 
 def calculate_mse(prediction, val):
     sum_of_mse = 0
     for index in range(10):
-        sum_of_mse += math.pow((prediction[index]-val[index]), 2)
+        sum_of_mse += math.pow((prediction[index] - val[index]), 2)
     return sum_of_mse
-
