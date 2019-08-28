@@ -67,7 +67,7 @@ cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(labels=y,
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy) # Uses the Adam Optimization method to minimize the cross-entropy tensor
 
 # ACCURACY
-correct_pred = tf.equal(tf.argmax(output_layer, 1), tf.argmax(y, 1)) # tf.argmax(output_layer, 1) finds the digit that the network sees as the most probable to match the inputted the image. A lsit of booleans representing whether the predictions were right is returned
+correct_pred = tf.equal(tf.argmax(output_layer, 1), tf.argmax(y, 1)) # tf.argmax(output_layer, 1) finds the digit that the network sees as the most probable to match the inputted the image. A list of booleans representing whether the predictions were right is returned
 accuracy = tf.reduce_mean(tf.cast(correct_pred, tf.float32)) # tf.cast casts the input boolean tensor to floats. tf.reduce_mean calculates average number right
 
 init = tf.global_variables_initializer()
