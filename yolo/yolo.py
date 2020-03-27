@@ -26,15 +26,28 @@ def create_blocks(cfg_filename):
 
 def create_model(blocks):
     model = keras.Sequential()
-    for block in blocks:
+    for idx, block in enumerate(blocks):
         if block["type"] == "convolutional":
-            model.add(keras.layers.Conv2D(filters=block["filters"], kernel_size=block["size"], strides=block["stride"], padding=block["pad"], activation=keras.layers.LeakyReLU(alpha=0.1)))
+            try:
+                batch_normalize = int(block["batch_normalize"])
+                bias = False
+            except:
+                batch_normalize = 0
+                bias = True
+            pad = (block["size"] - 1)//2 if int(block["padding"]) else 0
+            model.add(keras.layers.Conv2D(filters=block["filters"], kernel_size=block["size"], strides=block["stride"], padding=pad, activation=keras.layers.LeakyReLU(alpha=0.1), bias=bias))
+            if batch_normalize == 1:
+                model.add(keras.layers.BatchNormalization(axis=1))
         elif block["type"] == "shortcut":
-            pass
+            prev_int = int(block["from"])
+            output_prev_layer = model.layers[idx-prev_int].output
+            shortcut_layer = keras.layers.Dense(len(output_prev_layer))(output_prev_layer)
+            model.add(shortcut_layer)
+            model.add(keras.layers.Activation('linear'))
         elif block["type"] == "upsample":
-            pass
+            model.add(keras.layers.UpSampling2D(interpolation='nearest'))
         elif block["type"] == "route":
-            pass
+            
         else: #implies yolo layer
             pass
 
