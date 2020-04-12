@@ -39,15 +39,27 @@ def create_model(blocks):
             if batch_normalize == 1:
                 model.add(keras.layers.BatchNormalization(axis=1))
         elif block["type"] == "shortcut":
-            prev_int = int(block["from"])
-            output_prev_layer = model.layers[idx-prev_int].output
-            shortcut_layer = keras.layers.Dense(len(output_prev_layer))(output_prev_layer)
+            from_int = int(block["from"])
+            output_from_layer = model.layers[idx+from_int].output
+            output_prev_layer = model.layers[idx-1].output
+            shortcut_output = output_from_layer + output_prev_layer
+            shortcut_layer = keras.layers.Dense(len(shortcut_output))(shortcut_output)
             model.add(shortcut_layer)
             model.add(keras.layers.Activation('linear'))
         elif block["type"] == "upsample":
-            model.add(keras.layers.UpSampling2D(interpolation='nearest'))
+            model.add(keras.layers.UpSampling2D(interpolation='bilinear')) #Bilinear upscaling uses all nearby pixels to figure out new pixel values
         elif block["type"] == "route":
-            
+            numbers = block["layers"].split(", ")
+            if len(numbers) == 1: #Implies only start connection
+                output_from_layer = model.layers[idx+numbers[0]].output
+                route_layer = keras.layers.Dense(len(output_from_layer))(output_from_layer)
+                model.add(route_layer)
+            else:
+                output_start_layer = model.layers[idx+numbers[0]].output
+                output_end_layer = model.layers[numbers[1]].output
+                output = output_start_layer + output_end_layer
+                route_layer = keras.layers.Dense(output)(output)
+                model.add(route_layer)
         else: #implies yolo layer
             pass
 
