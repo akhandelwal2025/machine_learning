@@ -57,7 +57,7 @@ def create_model(blocks):
             else:
                 output_start_layer = model.layers[idx+numbers[0]].output
                 output_end_layer = model.layers[numbers[1]].output
-                output = output_start_layer + output_end_layer
+                output = keras.layers.concatenate([output_start_layer, output_end_layer], axis=1)
                 route_layer = keras.layers.Dense(output)(output)
                 model.add(route_layer)
         else: #implies yolo layer
