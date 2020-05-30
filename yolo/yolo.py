@@ -38,6 +38,7 @@ def create_model(blocks):
             model.add(keras.layers.Conv2D(filters=block["filters"], kernel_size=block["size"], strides=block["stride"], padding=pad, activation=keras.layers.LeakyReLU(alpha=0.1), bias=bias))
             if batch_normalize == 1:
                 model.add(keras.layers.BatchNormalization(axis=1))
+
         elif block["type"] == "shortcut":
             from_int = int(block["from"])
             output_from_layer = model.layers[idx+from_int].output
@@ -46,8 +47,10 @@ def create_model(blocks):
             shortcut_layer = keras.layers.Dense(len(shortcut_output))(shortcut_output)
             model.add(shortcut_layer)
             model.add(keras.layers.Activation('linear'))
+
         elif block["type"] == "upsample":
             model.add(keras.layers.UpSampling2D(interpolation='bilinear')) #Bilinear upscaling uses all nearby pixels to figure out new pixel values
+
         elif block["type"] == "route":
             numbers = block["layers"].split(", ")
             if len(numbers) == 1: #Implies only start connection
@@ -60,6 +63,7 @@ def create_model(blocks):
                 output = keras.layers.concatenate([output_start_layer, output_end_layer], axis=1)
                 route_layer = keras.layers.Dense(output)(output)
                 model.add(route_layer)
+
         else: #implies yolo layer
             pass
 
