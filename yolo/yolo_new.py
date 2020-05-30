@@ -15,13 +15,20 @@ def main():
 
 def create_model(inputs, obj_list):
     darknet_model = None
+    current_tensor = inputs
+
+    most_recent_part1 = None
+    last_layers_part2_list = []
     for obj in obj_list:
         obj_name = list(obj.keys())[0]
         if obj_name == "Darknet":
             darknet_model = Model(inputs, create_obj_layers(inputs, obj[obj_name]))
-        
+            current_tensor = darknet_model.output
+        elif obj_name == "Concatenate":
+            current_tensor = create_obj_layers(current_tensor, obj[obj_name], darknet=darknet_model)
+        elif obj_name == "Last_Layers_Part1":
 
-def create_obj_layers(inputs, module_list):
+def create_obj_layers(inputs, module_list, darknet=None):
     current_tensor = inputs
     for layer_tup in module_list:
         layer_name = layer_tup[0]
@@ -36,7 +43,8 @@ def create_obj_layers(inputs, module_list):
         elif layer_name == "UpSampling2D":
             current_tensor = UpSampling2D(**layer_tup[1])(current_tensor)
         else:
-            current_tensor = Concatenate(**layer_tup[1])(current_tensor)
+            darknet_num = layer_tup[1]["inputs"]
+            current_tensor = Concatenate()([current_tensor, darknet.layers[darknet_num].output])
     return current_tensor
 
 def parse_config():
@@ -60,6 +68,7 @@ def parse_config():
         elif line[0] == '<' and line[len(line)-1] == ">": #Start/end of object (EX. <Darknet> OR </Darknet>)
             if line[1] == "/":
                 obj_list.append({current_obj:obj_modules_list})
+                obj_modules_list=[]
             else:
                 current_obj = str(line.strip(" <>")) #Will strip whitespace + delimiter from leading/trailing edges
         elif line[0] == "[" and line[len(line)-1] == "]":
