@@ -3,7 +3,7 @@ import time
 import re
 import tensorflow as tf
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Conv2D, BatchNormalization, LeakyReLU, ZeroPadding2D, UpSampling2D, Concatenate
+from tensorflow.keras.layers import Conv2D, BatchNormalization, LeakyReLU, ZeroPadding2D, UpSampling2D, Concatenate, Add
 CONFIG_FILE = "yolo_newv3.txt"
 
 NUM_ANCHORS = 0
@@ -43,6 +43,12 @@ def create_obj_layers(inputs, module_list, darknet=None):
             current_tensor = ZeroPadding2D(**layer_tup[1])(current_tensor)
         elif layer_name == "UpSampling2D":
             current_tensor = UpSampling2D(**layer_tup[1])(current_tensor)
+        elif layer_name == "Resblock":
+            multiplier = layer_tup[1]
+            filters = layer_tup[2]
+            for block in range(multiplier):
+                temp = create_obj_layers(current_tensor, layer_tup[3])
+                current_tensor = Add()([current_tensor, temp])
         else:
             darknet_num = layer_tup[1]["inputs"]
             current_tensor = Concatenate()([current_tensor, darknet.layers[darknet_num].output])
@@ -60,6 +66,7 @@ def parse_config():
 
     resblock_list = []
     resblock_multiplier = 1
+    resblock_filters = 0
     in_resblock = False
     while line_count < len(lines):
         line = lines[line_count]
@@ -84,15 +91,17 @@ def parse_config():
                 resblock_list.append((current_module, module_attributes)) #Tuple in form (Conv2D, {filters:64, "kernel_size":(3,3)}). This is in case whether a resblock is present
             else:
                 obj_modules_list.append((current_module, module_attributes)) #If not in resblock, append to module lists
-        elif line[0] == "/" and line[len(line)-1] == "/": #indicates /x2/ or /*x2/ (multiplier)
+        elif line[0] == "/" and line[len(line)-1] == "/": #indicates /x2x1024/ or /*x2/ (multiplier, filters)
             if line[1] == "*":
-                resblock_list = resblock_list*resblock_multiplier
-                obj_modules_list.extend(resblock_list.copy())
+                obj_modules_list.append(("Resblock", resblock_multiplier, resblock_filters, resblock_list))
                 resblock_list = []
                 resblock_multiplier = 1
+                resblock_filters = 0
                 in_resblock = False
             else:
-                resblock_multiplier = int(line.strip(" /x")[0])
+                parts = line.strip(" /").split("x")
+                resblock_multiplier = int(parts[1])
+                resblock_filters = int(parts[2])
                 in_resblock = True
         else:
             line_count += 1
