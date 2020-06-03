@@ -27,6 +27,7 @@ def create_model(inputs, obj_list):
         elif obj_name == "Concatenate":
             current_tensor = create_obj_layers(current_tensor, obj[obj_name], darknet=darknet_model)
         elif obj_name == "Last_Layers_Part1":
+            pass
 
 def create_obj_layers(inputs, module_list, darknet=None):
     current_tensor = inputs
