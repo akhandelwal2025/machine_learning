@@ -1,0 +1,79 @@
+{
+    "asset": {
+        "format": "jpg",
+        "id": "76874fdd56b3a93dc5f886dfe34f1784",
+        "name": "images%20(71).jpg",
+        "path": "file:/Users/ankitkhandelwal/Documents/TrainYourOwnYOLO/Data/Source_Images/Training_Images/images%20(71).jpg",
+        "size": {
+            "width": 291,
+            "height": 173
+        },
+        "state": 2,
+        "type": 1
+    },
+    "regions": [
+        {
+            "id": "vGTwn1-NR",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 168.5863037109375,
+                "width": 170.5796497444238,
+                "left": 0,
+                "top": 4.4136962890625
+            },
+            "points": [
+                {
+                    "x": 0,
+                    "y": 4.4136962890625
+                },
+                {
+                    "x": 170.5796497444238,
+                    "y": 4.4136962890625
+                },
+                {
+                    "x": 170.5796497444238,
+                    "y": 173
+                },
+                {
+                    "x": 0,
+                    "y": 173
+                }
+            ]
+        },
+        {
+            "id": "2bodpleFD",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 171.673779296875,
+                "width": 161.02107051579927,
+                "left": 128.2083526951673,
+                "top": 0
+            },
+            "points": [
+                {
+                    "x": 128.2083526951673,
+                    "y": 0
+                },
+                {
+                    "x": 289.22942321096656,
+                    "y": 0
+                },
+                {
+                    "x": 289.22942321096656,
+                    "y": 171.673779296875
+                },
+                {
+                    "x": 128.2083526951673,
+                    "y": 171.673779296875
+                }
+            ]
+        }
+    ],
+    "version": "2.1.0"
+}

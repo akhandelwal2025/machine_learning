@@ -1,0 +1,48 @@
+{
+    "asset": {
+        "format": "jpg",
+        "id": "04e432673a1308dcec737609a00b4403",
+        "name": "images%20-%202020-04-17T124011.007.jpg",
+        "path": "file:/Users/ankitkhandelwal/Documents/TrainYourOwnYOLO/Data/Source_Images/Training_Images/images%20-%202020-04-17T124011.007.jpg",
+        "size": {
+            "width": 225,
+            "height": 225
+        },
+        "state": 2,
+        "type": 1
+    },
+    "regions": [
+        {
+            "id": "PNOIS-DrM",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 130.42772711431226,
+                "width": 163.15963348048328,
+                "left": 31.686367332713754,
+                "top": 50.94062209572491
+            },
+            "points": [
+                {
+                    "x": 31.686367332713754,
+                    "y": 50.94062209572491
+                },
+                {
+                    "x": 194.84600081319704,
+                    "y": 50.94062209572491
+                },
+                {
+                    "x": 194.84600081319704,
+                    "y": 181.3683492100372
+                },
+                {
+                    "x": 31.686367332713754,
+                    "y": 181.3683492100372
+                }
+            ]
+        }
+    ],
+    "version": "2.1.0"
+}

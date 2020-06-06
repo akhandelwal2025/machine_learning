@@ -1,0 +1,48 @@
+{
+    "asset": {
+        "format": "jpg",
+        "id": "b4703733c6f571188fb1249e2c04f9b2",
+        "name": "images%20(75).jpg",
+        "path": "file:/Users/ankitkhandelwal/Documents/TrainYourOwnYOLO/Data/Source_Images/Training_Images/images%20(75).jpg",
+        "size": {
+            "width": 225,
+            "height": 225
+        },
+        "state": 2,
+        "type": 1
+    },
+    "regions": [
+        {
+            "id": "ITGCv4G8B",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 223.37941449814127,
+                "width": 182.28319586431226,
+                "left": 24.243436338289964,
+                "top": 1.620585501858736
+            },
+            "points": [
+                {
+                    "x": 24.243436338289964,
+                    "y": 1.620585501858736
+                },
+                {
+                    "x": 206.52663220260223,
+                    "y": 1.620585501858736
+                },
+                {
+                    "x": 206.52663220260223,
+                    "y": 225
+                },
+                {
+                    "x": 24.243436338289964,
+                    "y": 225
+                }
+            ]
+        }
+    ],
+    "version": "2.1.0"
+}

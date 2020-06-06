@@ -1,0 +1,48 @@
+{
+    "asset": {
+        "format": "jpg",
+        "id": "9dde45e1ad5a858da7ecddb4adebdf40",
+        "name": "images%20-%202020-04-17T123942.129.jpg",
+        "path": "file:/Users/ankitkhandelwal/Documents/TrainYourOwnYOLO/Data/Source_Images/Training_Images/images%20-%202020-04-17T123942.129.jpg",
+        "size": {
+            "width": 225,
+            "height": 225
+        },
+        "state": 2,
+        "type": 1
+    },
+    "regions": [
+        {
+            "id": "Kpo-CeDUl",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 150.42366112918216,
+                "width": 166.7308027416357,
+                "left": 35.63327718401487,
+                "top": 38.10989776951673
+            },
+            "points": [
+                {
+                    "x": 35.63327718401487,
+                    "y": 38.10989776951673
+                },
+                {
+                    "x": 202.36407992565057,
+                    "y": 38.10989776951673
+                },
+                {
+                    "x": 202.36407992565057,
+                    "y": 188.53355889869889
+                },
+                {
+                    "x": 35.63327718401487,
+                    "y": 188.53355889869889
+                }
+            ]
+        }
+    ],
+    "version": "2.1.0"
+}

@@ -1,0 +1,48 @@
+{
+    "asset": {
+        "format": "jpg",
+        "id": "b94f436bc487398148a306a3ad079ab9",
+        "name": "Z%20(1).jpg",
+        "path": "file:/Users/ankitkhandelwal/Documents/TrainYourOwnYOLO/Data/Source_Images/Training_Images/Z%20(1).jpg",
+        "size": {
+            "width": 100,
+            "height": 100
+        },
+        "state": 2,
+        "type": 1
+    },
+    "regions": [
+        {
+            "id": "vAdm_0_0R",
+            "type": "RECTANGLE",
+            "tags": [
+                "Mug"
+            ],
+            "boundingBox": {
+                "height": 88.2217123605948,
+                "width": 92.15410083643123,
+                "left": 4.420306691449814,
+                "top": 8.741868029739777
+            },
+            "points": [
+                {
+                    "x": 4.420306691449814,
+                    "y": 8.741868029739777
+                },
+                {
+                    "x": 96.57440752788104,
+                    "y": 8.741868029739777
+                },
+                {
+                    "x": 96.57440752788104,
+                    "y": 96.96358039033457
+                },
+                {
+                    "x": 4.420306691449814,
+                    "y": 96.96358039033457
+                }
+            ]
+        }
+    ],
+    "version": "2.1.0"
+}
